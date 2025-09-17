@@ -5,7 +5,7 @@ const app = express();
 const logDate = (req, res, next) => {
   const date = new Date()
   console.log(`${req.method} ${req.url} ${date}`);
-  checkAuth(req, res, next);
+  next();
 }
 
 const checkAuth = (req, res, next) => {
@@ -13,12 +13,13 @@ const checkAuth = (req, res, next) => {
   if (auth === "true") {
     next();
   } else {
-    res.status(404).send("Unauthorized");
+    res.status(401).send("Unauthorized");
   }
 }
 
+app.use(logDate);
 
-app.get('/', logDate, (req, res) => {
+app.get('/', logDate, checkAuth, (req, res) => {
   res.send('Welcome to Node.js!')
 
 })
