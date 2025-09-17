@@ -13,7 +13,7 @@ const checkAuth = (req, res, next) => {
   if (auth === "true") {
     next();
   } else {
-    res.status(401).send("Unauthorized");
+    res.status(404).send("Unauthorized");
   }
 }
 
