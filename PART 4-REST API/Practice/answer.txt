@@ -1,0 +1,71 @@
+1=> i dont know the difference between rest api and soap api
+
+2=> we use HTTP methods to create and edit data.
+  GET- is used to request or display data.
+  POST- is used to send or input data.
+  PUT - is used to update our data.
+  DELETE - is used to remove our data.
+
+3=> Query Parameters are gotten from the website url while path parameters are mostly gotten from the file system.
+
+4=> I dont know  what idempotent mean.
+
+5=>
+  200 - The browser request is successful
+  201 - Internet Problem with the browser.
+  400 - Server response is successful.
+  401 - Internal server error.
+  403 - Internal server error.
+  404 - Page not found.
+  500 - Request successful.
+
+6=> Because of the Chrome's V8 engine which uses Javascript.
+
+7=> Middleware is used to control the workflow between API. it handles important functions like authentication.
+
+8=>i dont know what are headers.
+
+9=> Put is used to update a certain property in a data while Patch is used to update the whole data.
+
+10=> Authentication is important in Apis cause it helps to restrict access to sensitive areas of the code.
+  Examples are BetterAuth and OAuth.
+
+
+~CORRECTION~
+
+1> Rest api uses HTTP methods, returns data usually in Json, lightweight and faster
+   while
+   Soap api uses XML for requests, heavier and more strict, often used in banking systems.
+
+3> Query parameters adds extra data in the url after ? often used for filtering or searching.
+   while
+   Path parameters are path of the url itself used to identify a resource.
+
+4> Idempotent are methods whereby repeating the same request gives the same result e.g PUT,GET, DELETE.
+  POST isnt idempotent because each call creates new data.
+
+5> Status code:
+  200 - Success (OK)
+  201 - Created(new resource added succesfully)
+  400 - bad request.
+  401 -  Unauthorized(no valid authentication)
+  403 - Forbidden(Valid Login but no permission)
+  404 - not  found
+  500 - Internal server error (server crashed or bug)
+
+6> Json is lightweight and human readable.
+
+8> Headers are extra functions sent with HTTP requests. Example: Content-Type: application/Json.
+
+9> PUT replaces the entire resource with new data.
+   PATCH modifies only specific fields.
+   Example:
+   User = {
+    "name": "Stanley",
+    "age": 25
+   }
+
+   PUT with {"name": "Mike"} ==> {"name": "Mike"}
+   PATCH with {"name": "Mike"} ===> {"name": "Mike", "age": "25"};
+
+
