@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const key = require('./key')
 
 
-connect().catch(err => console.log(err))
 async function connect() {
   await mongoose.connect(
     `mongodb+srv://${key.password}@cluster0.o2zp1hm.mongodb.net/`
@@ -27,14 +26,15 @@ const User = mongoose.model('User', userSchema)
 
 async function runQueryExamples() {
   try {
+    await connect().catch(err => console.log(err))
     //create a new document
-    // const newUser = await User.create({
-    //   name: 'Travis Doe',
-    //   email: "travis@gmail.com",
-    //   age: 31,
-    //   isActive: true,
-    //   tags: ['developer'],
-    // }) 
+    const newUser = await User.create({
+      name: 'Updated User',
+      email: "updateduser@gmail.com",
+      age: 75,
+      isActive: true,
+      tags: ['developer'],
+    })
 
     /*
   const newUser = new User({
@@ -48,7 +48,7 @@ async function runQueryExamples() {
     */
     // const allUsers = await User.find({});
     // console.log(allUsers);
-    //  console.log('Created new user', newUser);
+    console.log('Created new user', newUser);
 
     // const getUserOfActiveFalse = await User.find({isActive: true})
     // console.log(getUserOfActiveFalse);
@@ -68,10 +68,20 @@ async function runQueryExamples() {
     // const sortedUsers = await User.find().sort({age: 1})
     // console.log(sortedUsers)
 
-    const countDoc = await User.countDocuments({isActive: true});
-    console.log(countDoc);
-    
-    
+    // const countDoc = await User.countDocuments({isActive: true});
+    // console.log(countDoc);
+
+    // const deletedUser = await User.findByIdAndDelete(newUser._id)
+    // console.log('deleted user ->', deletedUser)
+
+    const updateUser = await User.findByIdAndUpdate(newUser._id, {
+      $set: { age: 100 },
+      $push: { tags: 'updated' }
+    }, { new: true })
+
+    console.log('updated user ->', updateUser)
+
+
 
   } catch (err) {
     console.log('Error ->', err)
