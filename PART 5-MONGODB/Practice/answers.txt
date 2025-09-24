@@ -1,0 +1,34 @@
+1.> MongoDB is a database which saves data while Mongoose is an object modelling framework for mongoDB.
+
+2.> A document is a single file which contains lists of data while a collection is a group of documents.
+
+3.> SQL databases are aform of database which is strict and stores data in tables consisting of rows and columns while 
+    NoSQL databases are a form of database which is less strict and stores data in forms of object.
+
+4.> A Schema is used to define the  property types of a new set of data.
+
+5.> save() is used to add data to an existing database while create() is used to add data into a database even if it doesn't exists.
+
+6.>Mongoose.connect() returns a Promise when successful.
+
+7.> The required is used for a compulsory data while unique is used to avoid duplication.
+
+8.> find() = finds all data
+    findOne() = finds only the first data
+    findById() = finds data with the given id.
+
+9.> I don't know.
+
+10.> Models are used to define the data types of a  list of data and also provide methods to edit  data.
+
+CORRECTION
+2.> A document is a single record in a database while a collection is a group of documents(like a table in SQL).
+
+5.> save() is used as an instance of a model while create()is a shortcut which creates and save a document in one step.
+
+9.> lean() makes Mongoose return plain javascript. Use lean() when you only need to read the data.
+
+10.> Model is a wrapper around a schema that allows interaction with the database.
+
+
+
