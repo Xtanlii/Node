@@ -1,11 +1,10 @@
-require('dotenv').config()
+const keys = require('../secrets')
 const mongoose = require('mongoose');
-const key = process.env.KEY
 
 
 const connectToDB = async () => {
   try {
-    await mongoose.connect(`mongodb+srv://${key}cluster0.90etgtk.mongodb.net/`);
+    await mongoose.connect(keys.KEY);
     console.log('MongoDB is connected successfully !')
   } catch (error) {
     console.error('MongoDB connection failed:', error);
