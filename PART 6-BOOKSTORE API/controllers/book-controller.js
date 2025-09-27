@@ -72,8 +72,6 @@ const updateBook = async (req, res) => {
   try {
     const updatedBookFormData = req.body;
     const getCurrentBookId = req.params.id;
-    const existingBook = await Book.findById(getCurrentBookId);
-    console.log('Existing book:', existingBook);
     const updatedBook = await Book.findByIdAndUpdate(
       getCurrentBookId,
       updatedBookFormData,
