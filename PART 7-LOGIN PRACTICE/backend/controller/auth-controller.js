@@ -50,7 +50,28 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    const { email, password } = req.body;
+
+    // Check if user email exists
+    const userExists = await User.find({email})
+    if(!userExists) {
+      return res.status(400).json({
+        success: false,
+        message: "User does not exist"
+      })
+    }
+
+    //Check if password is correct
+    const isPasswordCorrect = await bcrypt.compare(password, userExists.password);
+    if(!isPasswordCorrect) {
+      res.status(400).json({
+        success: false,
+        message: "Invalid password! please try again"
+      })
+    }
+    // create token
     
+
   } catch (err) {
     console.error(err);
     res.status(500).json({
