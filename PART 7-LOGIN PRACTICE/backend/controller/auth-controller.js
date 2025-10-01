@@ -1,5 +1,6 @@
 const User = require('../model/user-model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 
 // Registration controller
@@ -49,15 +50,18 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  console.log('Route hit')
   try {
+    console.log('Try hit');
     const { email, password } = req.body;
-
+    console.log(email, password)
     // Check if user email exists
-    const userExists = await User.find({email})
+    const userExists = await User.findOne({email})
+    
     if(!userExists) {
       return res.status(400).json({
         success: false,
-        message: "User does not exist"
+        message: "Invalid email "
       })
     }
 
@@ -70,7 +74,18 @@ const login = async (req, res) => {
       })
     }
     // create token
-    
+    const token = jwt.sign(
+      { 
+        userId: userExists._id,
+        role: userExists.role 
+      },process.env.JWT_SECRET,{ expiresIn: '1d' }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      token,
+    })
 
   } catch (err) {
     console.error(err);
