@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 
 function Home() {
+  const navigate = useNavigate();
   const [msg, setMsg] = useState('');
   useEffect(() => {
     const fetch = async () => {
@@ -15,7 +17,10 @@ function Home() {
         })
         setMsg(res.data.message)
       } catch (err) {
-        console.log(err)
+        if(err.response.status === 401 || err.response.status === 500) {
+          localStorage.removeItem("token");
+          navigate('/login')
+        }
         setMsg("Access Denied")
       }
     }

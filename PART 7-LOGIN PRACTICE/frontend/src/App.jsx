@@ -1,18 +1,18 @@
 import Register from './routes/register'
-import { Route, Routes, useNavigate } from 'react-router'
+import { Route, Routes } from 'react-router'
 import './App.css'
 import Login from './routes/login'
 import Home from './routes/Home'
+import ProtectedRoute from './routes/ProtectedRoutes'
 
 
 function App() {
-  const navigate = useNavigate()
-  const token = localStorage.getItem("token");
+
   return (
     <Routes>
       <Route index element={<Register />} />
       <Route path='/login' element={<Login />} />
-      <Route path='/home' element={token ? <Home /> : navigate('/login')} />
+      <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
     </Routes>
   )
 }
