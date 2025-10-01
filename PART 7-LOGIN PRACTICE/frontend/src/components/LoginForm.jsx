@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useState } from "react";
 import { useNavigate } from "react-router";
 import axios from 'axios';
 
@@ -15,8 +15,9 @@ function Form() {
     setPassword(event.target.value)
   }
 
-  const registerUser = async () => {
+  const registerUser = async() => {
     try {
+
       const res = await axios.post('/api/auth/login', {
         email,
         password
@@ -27,7 +28,7 @@ function Form() {
       navigate('/home')
     } catch (err) {
       if (err.response) {
-        console.log("Status:", err.response.data, err.response.status)
+        alert(err.response.data.message || "Login failed")
         setMessage(err.response.data.message);
         console.log(message);
       }
