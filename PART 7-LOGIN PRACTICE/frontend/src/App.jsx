@@ -4,6 +4,7 @@ import './App.css'
 import Login from './routes/login'
 import Home from './routes/Home'
 import ProtectedRoute from './routes/ProtectedRoutes'
+import FileUpload from './Upload'
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Route index element={<Register />} />
       <Route path='/login' element={<Login />} />
       <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+      <Route path="/file" element={<FileUpload />} />
     </Routes>
   )
 }
