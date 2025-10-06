@@ -1,16 +1,28 @@
-const multer = require('multer');
+
 const cloudinary = require('../config/cloudinary')
 const File = require('../model/file-model');
 
 
-const uploadToCloudinary = async(filePath) => {
+const uploadFiles = async(req, res) => {
   try {
-    const result = await cloudinary.uploader.upload(filePath)
+    if(!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "File is required. Please upload an image"
+      })
+    }
+  
+    const filePath = req.file.path
+    const {url, public_id} = await cloudinary.uploader.upload(filePath)
     const newFile = new File({
-      url: result.url,
-      publicId: result.public_id,
+      url,
+      publicId: public_id,
     })
     await newFile.save();
+    res.status(201).json({
+      success: true,
+      message: "File is saved"
+    })
 
   } catch (err) {
     console.error(err);
@@ -25,10 +37,7 @@ const getFiles = async(req,res) => {
   try {
     const file = await File.find({});
     if(file){
-      res.status(200).json({
-        success: true,
-        data: file
-      })
+      res.status(200).json(file)
     }else {
       res.status(404).json({
         success: false,
@@ -45,6 +54,6 @@ const getFiles = async(req,res) => {
 }
 
 module.exports = {
-  uploadToCloudinary,
+  uploadFiles,
   getFiles
 }

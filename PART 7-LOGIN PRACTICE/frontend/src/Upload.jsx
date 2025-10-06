@@ -1,68 +1,50 @@
-import axios from "axios";
 import { useState } from "react";
+import axios from "axios";
 
-
-
-function FileUpload() {
+export default function UploadForm() {
   const [file, setFile] = useState(null);
-  const formData = new FormData()
-  formData.append("myfile", file)
-  const submitfile = () => {
+  const [uploading, setUploading] = useState(false)
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!file) return alert("Please select a file first!");
+
+    const formData = new FormData();
+    formData.append("image", file);
+
     try {
-      axios.post('/api/upload', {
-        formData
-      })
-    } catch (err) {
-      console.log(err)
+      setUploading(true);
+      const res = await axios.post("/api/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (progressEvent) => {
+          const percent = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          console.log(`Upload progress: ${percent}%`);
+        },
+      });
+
+      alert("File uploaded successfully!");
+      console.log("Server response:", res.data);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Upload failed!");
+    } finally {
+      setUploading(false);
     }
-  }
-  
+  };
 
-  const filePath = async(event) => {
-    await setFile(event.target.files[0]);
-    // console.log("File name:", file.name);
-    // // console.log("File type:", file.type);
-    // // console.log("File size:", file.size);
-  }
+
   return (
-    <form
-      action="/upload"
-      method="post"
-      enctype="multipart/form-data"
-      className="max-w-sm mx-auto mt-10 p-6 bg-gray-900 text-white rounded-2xl shadow-lg space-y-4"
-    >
-      <div>
-        <label
-          for="fileUpload"
-          className="block text-sm font-medium text-gray-300 mb-2"
-        >
-          Choose a file
-        </label>
-        <input
-          type="file"
-          id="fileUpload"
-          name="myFile"
-          onChange={filePath}
-          className="block w-full text-sm text-gray-300 
-             file:mr-4 file:py-2 file:px-4 
-             file:rounded-lg file:border-0 
-             file:text-sm file:font-semibold 
-             file:bg-indigo-600 file:text-white 
-             hover:file:bg-indigo-500 cursor-pointer"
-        />
-      </div>
-
-      <button
-        type="submit"
-        onClick={submitfile}
-        className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-500 
-           rounded-lg font-semibold text-white transition"
-      >
-        Upload
-      </button>
-    </form>
-
+    <div>
+      <button onClick={handleSubmit} className="py-2 px-5 bg-blue-400" >Submit</button>
+      <input type="file" className="bg-blue-600 py-2 px-5" onChange={handleFileChange}/>
+    </div>
   );
 }
-
-export default FileUpload;
