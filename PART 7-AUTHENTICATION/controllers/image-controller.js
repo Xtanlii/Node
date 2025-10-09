@@ -44,9 +44,20 @@ const uploadImage = async (req, res) => {
 }
 
 const fetchImages = async (req, res) => {
-
   try {
-    const images = await Image.find({});
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 1;
+    const skip = (page -1)* limit;
+
+    const sortBy = req.query.sortBy || 'createdAt';
+    const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1
+    const totalImages = await Image.countDocuments();
+    const totalPages = Math.ceil(totalImages/limit);
+
+    const sortObject = {};
+    sortObject[sortBy] = sortOrder
+
+    const images = await Image.find().sort(sortObject).skip(skip).limit(limit);
     if (!images) {
       res.status(404).json({
         success: false,
@@ -56,6 +67,9 @@ const fetchImages = async (req, res) => {
     }
     res.status(200).json({
       success: true,
+      currentPage: page,
+      totalPages,
+      totalImages,
       data: images
     })
   } catch (err) {
