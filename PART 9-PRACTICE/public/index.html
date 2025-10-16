@@ -9,19 +9,60 @@
 
 <body>
   <div>
-    Online Users
-    <div id="users"></div>
+    <h3>Online Users</h3>
+    <ul id="usersList"></ul>
   </div>
+
   <div id="newMessage"></div>
   <form action="POST" id="messageInput">
     <input type="text" id="inputId" placeholder="Enter your message">
-    <button type="submit"></button>
+    <button type="submit">Submit</button>
   </form>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
+    const users = document.getElementById('usersList');
+    const newMessage = document.getElementById('newMessage');
+    const messageInput = document.getElementById('messageInput');
+    const inputId = document.getElementById('inputId');
+
+    const newUser = prompt('Enter your username');
+    socket.emit('join', newUser);
+
+    socket.on('userJoined', (name) => {
+      addMessage(`${name} has joined the chat`);
+    });
+
+    socket.on('userList', (userList) => {
+      users.innerHTML = userList.map(u => `<li>${u}</li>`).join("");
+    });
+
+    socket.on('newMessage', (msg) => {
+      addMessage(`${msg.userName}: ${msg.message}`);
+    });
+
+    socket.on('userLeft', (name) => {
+      addMessage(`${name} has left the chat`);
+    });
+
+    messageInput.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const message = inputId.value.trim();
+      if (message) {
+        socket.emit('newMessage', { userName: newUser, message });
+        inputId.value = ""; // clear input
+      }
+    });
+
+    function addMessage(text) {
+      const messageElement = document.createElement('div');
+      messageElement.textContent = text;
+      newMessage.appendChild(messageElement);
+      newMessage.scrollTop = newMessage.scrollHeight;
+    }
   </script>
+
 </body>
 
 </html>
