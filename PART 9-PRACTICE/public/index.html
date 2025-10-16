@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    Online Users
+    <div id="users"></div>
+  </div>
+  <div id="newMessage"></div>
+  <form action="POST" id="messageInput">
+    <input type="text" id="inputId" placeholder="Enter your message">
+    <button type="submit"></button>
+  </form>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+  </script>
+</body>
+
+</html>
